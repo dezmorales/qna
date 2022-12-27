@@ -1,5 +1,7 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :new, :destroy]
   before_action :find_question, only: [:new, :create]
+  before_action :set_answer, only: [:destroy]
 
   def new
     @answer = @question.answers.new
@@ -7,16 +9,29 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
 
     if @answer.save
-      redirect_to question_path(@question)
+      redirect_to question_path(@question), notice: 'Your answer successfully created.'
     else
-      render :new
+      render 'questions/show'
     end
 
   end
 
+  def destroy
+    if current_user == @answer.user
+      @answer.destroy
+
+      redirect_to questions_path, notice: 'Answer successfully deleted.'
+    end
+  end
+
   private
+
+  def set_answer
+    @answer = Answer.find(params[:id])
+  end
 
   def answer_params
     params.require(:answer).permit(:body)

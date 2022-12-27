@@ -1,2 +1,16 @@
 h1= @question.title
 p= @question.body
+- if current_user == @question.user
+  p = link_to 'Delete question', question_path(@question), method: :delete
+
+= render 'shared/errors', resource: @answer
+
+
+- @question.answers.each do |answer|
+  p = answer.body
+  - if current_user == answer.user
+    p = link_to 'Delete answer', answer_path(answer), method: :delete
+
+= render 'answers/form'
+
+
