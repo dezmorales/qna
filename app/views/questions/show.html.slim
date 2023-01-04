@@ -1,14 +1,14 @@
 h1= @question.title
 p= @question.body
-- if current_user == @question.user
+- if current_user&.author_of?(@question)
   p = link_to 'Delete question', question_path(@question), method: :delete
 
 = render 'shared/errors', resource: @answer
 
 
-- @question.answers.each do |answer|
+- @question.answers.select(&:persisted?).each do |answer|
   p = answer.body
-  - if current_user == answer.user
+  - if current_user&.author_of?(answer)
     p = link_to 'Delete answer', answer_path(answer), method: :delete
 
 = render 'answers/form'

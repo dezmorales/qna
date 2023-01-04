@@ -108,7 +108,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      let(:question) { create(:question, title: 'MyString', body: 'MyText' ) }
+      let(:question) { create(:question, title: 'MyString', body: 'MyText') }
 
       before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
 
@@ -126,21 +126,37 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE @destroy' do
-    before { login(user) }
+    let(:user) { create(:user) }
+    let(:author) { create(:user) }
+    let!(:question) { create(:question, user: author) }
 
-    let!(:question) { create(:question, user: user) }
+    context 'user is question author' do
+      before { login(author) }
 
-    it 'deletes the question' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'redirects to index' do
-      delete :destroy, params: { id: question }
-      expect(response).to redirect_to questions_path
+    context 'user is not question author' do
+      before { login(user) }
+
+      it 'not deletes the question' do
+        expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
+      end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
   end
 end
-
 
 
 

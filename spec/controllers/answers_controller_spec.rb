@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:answer) { create(:answer) }
   let(:question) { create(:question) }
-  let(:user) {create(:user)}
+  let(:user) { create(:user) }
 
   describe 'GET #new' do
     before { login(user) }
@@ -41,6 +41,20 @@ RSpec.describe AnswersController, type: :controller do
       it 're-renders new view' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
         expect(response).to render_template :show
+      end
+    end
+  end
+
+  describe 'DELETE @destroy' do
+    let(:user) { create(:user) }
+    let(:author) { create(:user) }
+    let(:answer) { create(answer, user: author) }
+
+    context 'user is answer author' do
+      before { login(author) }
+
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
       end
     end
   end
