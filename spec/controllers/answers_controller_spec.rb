@@ -48,13 +48,31 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE @destroy' do
     let(:user) { create(:user) }
     let(:author) { create(:user) }
-    let(:answer) { create(answer, user: author) }
+    let!(:answer) { create(:answer, user: author) }
 
     context 'user is answer author' do
       before { login(author) }
 
       it 'deletes the answer' do
         expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question page' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to questions_path(answer.question)
+      end
+    end
+
+    context 'user is not answer author' do
+      before { login(user) }
+
+      it 'not deletes the question' do
+        expect { delete :destroy, params: { id: answer } }.not_to change(Question, :count)
+      end
+
+      it 'redirects to question page' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to questions_path(answer.question)
       end
     end
   end

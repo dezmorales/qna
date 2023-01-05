@@ -23,7 +23,9 @@ class AnswersController < ApplicationController
     if current_user.author_of?(@answer)
       @answer.destroy
 
-      redirect_to questions_path, notice: 'Answer successfully deleted.'
+      redirect_to questions_path(@answer.question), notice: 'Answer successfully deleted.'
+    else
+      redirect_to questions_path(@answer.question)
     end
   end
 
