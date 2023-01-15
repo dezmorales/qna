@@ -8,14 +8,15 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = @question.answers.create(answer_params)
+    @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-  #   if
-    @answer.save
-  #   redirect_to question_path(@question), notice: 'Your answer successfully created.'
-  #   else
-  #     render 'questions/show'
-  # end
+
+    if @answer.save
+      redirect_to question_path(@question), notice: 'Your answer successfully created.'
+    else
+      render 'questions/show'
+    end
+
   end
 
   def destroy

@@ -3,8 +3,7 @@ p= @question.body
 - if current_user&.author_of?(@question)
   p = link_to 'Delete question', question_path(@question), method: :delete
 
-.answer-erros
-  = render 'shared/errors', resource: @answer
+= render 'shared/errors', resource: @answer
 
 
 - @question.answers.select(&:persisted?).each do |answer|
