@@ -28,19 +28,19 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'redirects to question' do
-        post :create, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to assigns(:question)
+        post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the answer' do
-        expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not change(Answer, :count)
+        expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js }.to_not change(Answer, :count)
       end
 
       it 're-renders new view' do
-        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-        expect(response).to render_template :show
+        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question, format: :js }
+        expect(response).to render_template :create
       end
     end
   end
