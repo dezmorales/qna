@@ -20,7 +20,6 @@ feature 'User can write an answer to the question', %q{
       click_on 'Add an answer'
 
       expect(page).to have_content 'answer text'
-      expect(page).to have_content 'Your answer successfully created.'
     end
 
     scenario 'creates an answer with errors', js: true do

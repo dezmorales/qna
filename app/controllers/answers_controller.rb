@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :new, :destroy]
   before_action :find_question, only: [:new, :create]
-  before_action :set_answer, only: [:destroy]
+  before_action :set_answer, only: [:destroy, :update]
 
   def new
     @answer = @question.answers.new
@@ -16,6 +16,11 @@ class AnswersController < ApplicationController
   #   else
   #     render 'questions/show'
   # end
+  end
+
+  def update
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
