@@ -12,12 +12,12 @@ feature 'User can delete their answer to the question', %q{
 
   describe 'Authenticated user' do
 
-    scenario 'can delete your answer' do
+    scenario 'can delete your answer', js: true do
       sign_in(user)
       visit question_path(question)
       click_on 'Delete answer'
 
-      expect(page).to have_content 'Answer successfully deleted.'
+      expect(page).to have_no_content answer.body
     end
 
     scenario "can't deletes someone else's answer" do

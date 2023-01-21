@@ -1,10 +1,14 @@
 p = answer.body
 - if current_user&.author_of?(answer)
   p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-  p = link_to 'Delete answer', answer_path(answer), method: :delete
+  p = link_to 'Delete answer', answer, method: :delete, remote: true
+- if (current_user == answer.question.user) && (answer.question.best_answer != answer)
+  p = link_to 'Mark as best', mark_as_best_answer_path(answer), class: 'best_answer_link', method: :post, remote: true
 
+.answer-errors
+  = render 'shared/errors', resource: @answer
 
-= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false  do |f|
   = f.label :body, 'Your answer'
   = f.text_area :body
   = f.submit 'Save'

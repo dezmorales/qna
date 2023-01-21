@@ -1,14 +1,22 @@
-h1= @question.title
-p= @question.body
-- if current_user&.author_of?(@question)
-  p = link_to 'Delete question', question_path(@question), method: :delete
+.question
+  = render @question
+
+.question-errors
+  = render 'shared/errors', resource: @question
+
 
 .answer-errors
   = render 'shared/errors', resource: @answer
 
 .answers
-  = render @question.answers
-  
+  .best_answer
+    - if @question.best_answer
+      p = 'Best answer:'
+      = render @best_answer
+  .other_answer
+    p = 'Answers:'
+    = render @other_answers
+
 = render 'answers/form'
 
 
