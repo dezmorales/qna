@@ -54,12 +54,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(author) }
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question page' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to questions_path(answer.question)
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -104,6 +104,22 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :update
       end
+    end
+  end
+
+  describe 'PATCH #mark_as_best' do
+    let(:user) { create(:user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    it 'change best answer' do
+      post :mark_as_best, params: { id: answer }, format: :js
+      question.reload
+      expect(question.best_answer).to eq answer
+    end
+
+    it 'render mark_as_best view' do
+      post :mark_as_best, params: { id: answer }, format: :js
+      expect(response).to render_template :mark_as_best
     end
   end
 end

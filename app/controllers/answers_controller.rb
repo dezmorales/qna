@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :new, :destroy]
-  before_action :find_question, only: [:new, :create, :mark_as_best]
-  before_action :set_answer, only: [:destroy, :update]
+  before_action :find_question, only: [:new, :create]
+  before_action :set_answer, only: [:destroy, :update, :mark_as_best]
 
   def new
     @answer = @question.answers.new
@@ -30,7 +30,7 @@ class AnswersController < ApplicationController
 
   def mark_as_best
     @last_best_answers = @answer.question.best_answer
-    @answer.question.update(best_answer_id: answer.id)
+    @answer.question.update(best_answer_id: @answer.id)
   end
 
   private
