@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :update, :destroy]
+  before_action :find_question, only: [:show, :update, :destroy, :destroy_file]
 
   def index
     @questions = Question.all
@@ -41,6 +41,13 @@ class QuestionsController < ApplicationController
       redirect_to questions_path, notice: 'Question successfully deleted.'
     else
       redirect_to questions_path
+    end
+  end
+
+  def destroy_file
+    if current_user.author_of?(@question)
+      @file = ActiveStorage::Attachment.find(params[:file_id])
+      @file.purge
     end
   end
 

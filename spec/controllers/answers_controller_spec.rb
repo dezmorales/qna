@@ -122,5 +122,28 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :mark_as_best
     end
   end
+
+  describe 'DELETE #destroy_file' do
+    let(:user) { create(:user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+    before do
+      answer.files.attach(
+        io: File.open(Rails.root.join('spec', 'rails_helper.rb')),
+        filename: 'rails_helper.rb'
+      )
+    end
+    before { login(user) }
+
+    it 'delete answer file' do
+      expect do
+        delete :destroy_file, params: { id: answer, file_id: answer.files.first.id }, format: :js
+      end.to change(answer.files, :count).by(-1)
+    end
+
+    it 'render destroy_file view' do
+      delete :destroy_file, params: { id: answer, file_id: answer.files.first.id }, format: :js
+      expect(response).to render_template :destroy_file
+    end
+  end
 end
 
