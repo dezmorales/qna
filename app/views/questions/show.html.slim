@@ -4,6 +4,11 @@
 .question-errors
   = render 'shared/errors', resource: @question
 
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
 
 .answer-errors
   = render 'shared/errors', resource: @answer

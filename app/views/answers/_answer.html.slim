@@ -6,6 +6,11 @@ div id="answer-#{answer.id}"
         p = link_to file.filename.to_s, url_for(file)
         - if current_user&.author_of?(answer)
           p = link_to 'Delete file', destroy_file_answer_path(answer, file_id: file.id), method: :delete, remote: true
+  .links
+    p Links:
+    ul
+      - answer.links.each do |link|
+        li= link_to link.name, link.url
   - if current_user&.author_of?(answer)
     p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p = link_to 'Delete answer', answer, method: :delete, remote: true
@@ -22,5 +27,5 @@ div id="answer-#{answer.id}"
     p
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
-    p
-      = f.submit 'Save'
+
+    p= f.submit 'Save'
