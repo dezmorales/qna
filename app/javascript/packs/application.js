@@ -13,6 +13,7 @@ import "./questions"
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require ("@nathanvda/cocoon")
 
 Rails.start()
 Turbolinks.start()
