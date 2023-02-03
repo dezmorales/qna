@@ -7,7 +7,7 @@ div id="answer-#{answer.id}"
         - if current_user&.author_of?(answer)
           p = link_to 'Delete file', destroy_file_answer_path(answer, file_id: file.id), method: :delete, remote: true
   .links
-    p Links:
+    h4 Links:
     ul
       = render answer.links
   - if current_user&.author_of?(answer)
@@ -26,5 +26,12 @@ div id="answer-#{answer.id}"
     p
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
+
+    p Links:
+    #links
+      = f.fields_for :links do |link|
+        = render 'link_fields', f: link
+      .links
+        = link_to_add_association 'add link', f, :links
 
     p= f.submit 'Save'
