@@ -6,4 +6,7 @@ class Link < ApplicationRecord
   validates :name, :url, presence: true
   validates :url, format: { with: URl_FORMAT }
 
+  def gist?
+    url =~ /^https:\/\/gist\.github\.com/
+  end
 end

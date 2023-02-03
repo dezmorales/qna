@@ -9,8 +9,7 @@ div id="answer-#{answer.id}"
   .links
     p Links:
     ul
-      - answer.links.each do |link|
-        li= link_to link.name, link.url
+      = render answer.links
   - if current_user&.author_of?(answer)
     p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p = link_to 'Delete answer', answer, method: :delete, remote: true
