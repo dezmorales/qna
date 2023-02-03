@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :links, only: [:destroy]
   root to: "questions#index"
 
 end
