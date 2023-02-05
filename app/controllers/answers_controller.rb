@@ -31,6 +31,9 @@ class AnswersController < ApplicationController
   def mark_as_best
     @last_best_answers = @answer.question.best_answer
     @answer.question.update(best_answer_id: @answer.id)
+    if @answer.question.reward
+      @answer.question.reward.update(user: @answer.user)
+    end
   end
 
   def destroy_file
