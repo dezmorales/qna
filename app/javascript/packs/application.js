@@ -9,10 +9,12 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "./answers"
 import "./questions"
+import '@nathanvda/cocoon'
 
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require ("@nathanvda/cocoon")
 
 Rails.start()
 Turbolinks.start()

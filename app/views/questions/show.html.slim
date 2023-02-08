@@ -1,9 +1,9 @@
 .question
   = render @question
+= link_to 'Rewards', rewards_path
 
 .question-errors
   = render 'shared/errors', resource: @question
-
 
 .answer-errors
   = render 'shared/errors', resource: @answer
@@ -18,5 +18,7 @@
     = render @other_answers
 
 = render 'answers/form'
+
+
 
 
