@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :answers
   has_many :questions
   has_many :rewards
+  has_many :votes
 
   def author_of?(obj)
     obj.user_id == id
