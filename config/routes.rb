@@ -5,17 +5,15 @@ Rails.application.routes.draw do
     post :vote, on: :member
   end
 
-  resources :questions do
+  resources :questions, concerns: [:votable] do
     member do
       delete :destroy_file
     end
-    concerns :votable
-    resources :answers, shallow: true, only: [:create, :update, :new, :destroy] do
+    resources :answers, shallow: true, only: [:create, :update, :new, :destroy], concerns: [:votable] do
       member do
         post :mark_as_best
         delete :destroy_file
       end
-      concerns :votable
     end
   end
 
