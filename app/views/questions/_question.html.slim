@@ -10,6 +10,7 @@ p= question.body
   h4 Links:
   ul
     = render @question.links
+= render 'votes', resource: @question
 - if question.reward
   p Reward:
   p = @question.reward.title

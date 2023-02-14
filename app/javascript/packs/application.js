@@ -10,6 +10,7 @@ import "channels"
 import "./answers"
 import "./questions"
 import '@nathanvda/cocoon'
+import "./votes"
 
 //= require jquery
 //= require jquery_ujs
