@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :update, :destroy, :destroy_file]
+  after_action :publish_question, only: [:create]
 
   include Voted
 
@@ -55,6 +56,16 @@ class QuestionsController < ApplicationController
       @file = ActiveStorage::Attachment.find(params[:file_id])
       @file.purge
     end
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    binding.pry
+
+    ActionCable.server.broadcast('questions_channel',
+       ApplicationController.render(partial: 'questions/question',
+                                    locals: { question: @question })
+    )
   end
 
   private
