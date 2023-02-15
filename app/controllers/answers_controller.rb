@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :new, :destroy]
   before_action :find_question, only: [:new, :create]
   before_action :set_answer, only: [:destroy, :update, :mark_as_best, :destroy_file]
+  after_action :publish_answer, only: [:create]
 
   include Voted
 
@@ -43,6 +44,18 @@ class AnswersController < ApplicationController
       @file = ActiveStorage::Attachment.find(params[:file_id])
       @file.purge
     end
+  end
+
+  def publish_answer
+    html = ApplicationController.renderer.new(warden: warden).render(
+      partial: 'answers/answer',
+      locals: { answer: @answer }
+    )
+
+    ActionCable.server.broadcast(
+      "question_#{@question.id}",
+      { html:, author_id: @answer.user.id }
+    )
   end
 
   private
