@@ -60,10 +60,9 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
-    binding.pry
 
     ActionCable.server.broadcast('questions_channel',
-       ApplicationController.render(partial: 'questions/question',
+       ApplicationController.render(partial: 'questions/question_preview',
                                     locals: { question: @question })
     )
   end
