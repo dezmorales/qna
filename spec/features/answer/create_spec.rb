@@ -47,4 +47,29 @@ feature 'User can write an answer to the question', %q{
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
+
+  describe 'By channel' do
+    scenario 'Answer appears on question page for another users after create', :js do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Body', with: 'answer text'
+        click_on 'Add an answer'
+
+
+        expect(page).to have_content('answer text', count: 1)
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content('answer text')
+      end
+    end
+  end
 end

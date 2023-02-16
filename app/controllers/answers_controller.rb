@@ -48,7 +48,7 @@ class AnswersController < ApplicationController
 
   def publish_answer
     html = ApplicationController.renderer.new(warden: warden).render(
-      partial: 'answers/answer',
+      partial: 'answers/answer_simple',
       locals: { answer: @answer }
     )
 
