@@ -15,7 +15,7 @@ class CommentsController < ApplicationController
     )
 
     ActionCable.server.broadcast(
-      'comments',
+      "comments_question_#{params[:question]}",
       { html:,
         author_id: @comment.user.id,
         commentable_selector: "#{@commentable.class.name.underscore}-#{@commentable.id}" }
