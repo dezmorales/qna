@@ -10,6 +10,8 @@ div id="answer-#{answer.id}"
     ul
       = render answer.links
     = render 'votes', resource: answer
-
+  .comments
+    h4 Comments:
+    = render answer.comments
   .answer-errors
     = render 'shared/errors', resource: @answer

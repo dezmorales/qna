@@ -16,6 +16,8 @@ class QuestionsController < ApplicationController
     @answer.links.new
     gon.question_id = @question.id
     gon.user_id = current_user&.id
+    @question_comment = @question.comments.new
+    @answer_comment = @answer.comments.new
   end
 
   def new

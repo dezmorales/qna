@@ -1,0 +1,7 @@
+= form_with(model: [commentable, comment], local: false) do |f|
+
+  p
+    = f.label :body, 'Your body'
+    = f.text_field :body
+  p
+    = f.submit 'Save'

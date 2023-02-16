@@ -15,6 +15,8 @@ class AnswersController < ApplicationController
     @answer.user = current_user
 
     @answer.save
+
+    @answer_comment = @answer.comments.new
   end
 
   def update

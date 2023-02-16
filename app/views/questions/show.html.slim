@@ -1,9 +1,19 @@
-.question
+div id="question-#{@question.id}"
   = render @question
-= link_to 'Rewards', rewards_path
+  = link_to 'Rewards', rewards_path
 
-.question-errors
-  = render 'shared/errors', resource: @question
+  .comments
+    h3 Comments:
+    = render @question.comments
+
+  - if current_user
+    = render 'comments/form', commentable: @question, comment: @question_comment
+
+  .comment-errors
+    = render 'shared/errors',  resource: @comment
+
+  .question-errors
+    = render 'shared/errors', resource: @question
 
 .answer-errors
   = render 'shared/errors', resource: @answer
