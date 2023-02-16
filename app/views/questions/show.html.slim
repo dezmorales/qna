@@ -6,8 +6,8 @@ div id="question-#{@question.id}"
     h3 Comments:
     = render @question.comments
 
-  - if current_user
-    = render 'comments/form', commentable: @question, comment: @question_comment
+    - if current_user
+      = render 'comments/form', commentable: @question, comment: @question_comment
 
   .comment-errors
     = render 'shared/errors',  resource: @comment
