@@ -16,6 +16,7 @@ import "./votes"
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require ("@nathanvda/cocoon")
+//= require action_cable
 
 Rails.start()
 Turbolinks.start()

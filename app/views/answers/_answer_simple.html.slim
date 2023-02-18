@@ -1,0 +1,17 @@
+div id="answer-#{answer.id}"
+  p = answer.body
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      div id = "answer-file-#{file.id}"
+        p = link_to file.filename.to_s, url_for(file)
+
+  .links
+    h4 Links:
+    ul
+      = render answer.links
+    = render 'votes', resource: answer
+  .comments
+    h4 Comments:
+    = render answer.comments
+  .answer-errors
+    = render 'shared/errors', resource: @answer

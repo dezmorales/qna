@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :update, :destroy, :destroy_file]
+  after_action :publish_question, only: [:create]
 
   include Voted
 
@@ -13,6 +14,10 @@ class QuestionsController < ApplicationController
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
     @answer = Answer.new
     @answer.links.new
+    gon.question_id = @question.id
+    gon.user_id = current_user&.id
+    @question_comment = @question.comments.new
+    @answer_comment = @answer.comments.new
   end
 
   def new
@@ -55,6 +60,15 @@ class QuestionsController < ApplicationController
       @file = ActiveStorage::Attachment.find(params[:file_id])
       @file.purge
     end
+  end
+
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast('questions_channel',
+       ApplicationController.render(partial: 'questions/question_preview',
+                                    locals: { question: @question })
+    )
   end
 
   private

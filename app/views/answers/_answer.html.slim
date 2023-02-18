@@ -11,11 +11,20 @@ div id="answer-#{answer.id}"
     ul
       = render answer.links
   = render 'votes', resource: answer
+  .comments
+    h4 Comments:
+    = render answer.comments
+
+      - if current_user
+        = render 'comments/form', commentable: answer, comment: @answer_comment
   - if current_user&.author_of?(answer)
     p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p = link_to 'Delete answer', answer, method: :delete, remote: true
   - if (current_user == answer.question.user) && (answer.question.best_answer != answer)
     p = link_to 'Mark as best', mark_as_best_answer_path(answer), class: 'best_answer_link', method: :post, remote: true
+
+    .comment-errors
+      = render 'shared/errors', resource: @comment
 
   .answer-errors
     = render 'shared/errors', resource: @answer
