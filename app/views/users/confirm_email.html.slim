@@ -1,0 +1,6 @@
+= 'Please confirm your email address.'
+
+= form_for User.new, url: users_confirm_email_path, method: :post do |f|
+  = f.label :email
+  = f.email_field :email, autofocus: true, value: ''
+  = f.submit 'Continue'
