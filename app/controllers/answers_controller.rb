@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
 
   include Voted
 
+  authorize_resource
+
   def new
     @answer = @question.answers.new
   end

@@ -4,7 +4,7 @@ div id="answer-#{answer.id}"
     - answer.files.each do |file|
       div id = "answer-file-#{file.id}"
         p = link_to file.filename.to_s, url_for(file)
-        - if current_user&.author_of?(answer)
+        - if can?(:destroy_file, answer)
           p = link_to 'Delete file', destroy_file_answer_path(answer, file_id: file.id), method: :delete, remote: true
   .links
     h4 Links:
@@ -17,10 +17,11 @@ div id="answer-#{answer.id}"
 
       - if current_user
         = render 'comments/form', commentable: answer, comment: @answer_comment
-  - if current_user&.author_of?(answer)
+  - if can?(:update, answer)
     p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    - if can?(:destroy, answer)
     p = link_to 'Delete answer', answer, method: :delete, remote: true
-  - if (current_user == answer.question.user) && (answer.question.best_answer != answer)
+  - if can?(:mark_as_best, answer)
     p = link_to 'Mark as best', mark_as_best_answer_path(answer), class: 'best_answer_link', method: :post, remote: true
 
     .comment-errors
