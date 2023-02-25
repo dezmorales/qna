@@ -24,6 +24,18 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index show update create destroy] do
+        resources :answers, shallow: true, only: %i[index show update create destroy]
+      end
+    end
+  end
+
   resources :rewards, only: [:index]
   resources :links, only: [:destroy]
   root to: "questions#index"
