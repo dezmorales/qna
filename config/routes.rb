@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   post '/users/confirm_email' => 'users#confirm_email'
@@ -19,6 +20,18 @@ Rails.application.routes.draw do
       member do
         post :mark_as_best
         delete :destroy_file
+      end
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index show update create destroy] do
+        resources :answers, shallow: true, only: %i[index show update create destroy]
       end
     end
   end
