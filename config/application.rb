@@ -18,6 +18,7 @@ module Qna
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.active_job.queue_adapter = :sidekiq
 
     config.autoload_paths += [config.root.join('app')]
 
