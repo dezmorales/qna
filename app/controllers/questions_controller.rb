@@ -20,6 +20,7 @@ class QuestionsController < ApplicationController
     gon.user_id = current_user&.id
     @question_comment = @question.comments.new
     @answer_comment = @answer.comments.new
+    @subscription = @question.subscriptions.find_by(user: current_user)
   end
 
   def new

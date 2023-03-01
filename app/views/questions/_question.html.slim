@@ -15,6 +15,14 @@ p= question.body
   p Reward:
   p = @question.reward.title
   image src="#{@question.reward.image_url}" style="width:48px;height:48px;"
+
+- if @subscription.present?
+  - if can?(:destroy, @subscription)
+    = link_to 'Unsubscribe', question_subscription_path(@question, @subscription), method: :delete
+  - else
+  - if can?(:create, Subscription)
+    = link_to 'Subscribe', question_subscriptions_path(@question), method: :post
+
 - if can?(:update, question)
   p = link_to 'Edit question', '#', class: 'edit-question-link'
 - if can?(:destroy, question)
