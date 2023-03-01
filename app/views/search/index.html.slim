@@ -1,0 +1,5 @@
+- if @result.any?
+  - @result.each do |object|
+    = render partial: "#{object.class.name&.downcase}", object: object
+- else
+  p = 'Not found'
