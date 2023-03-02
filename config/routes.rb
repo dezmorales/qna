@@ -28,9 +28,10 @@ Rails.application.routes.draw do
         delete :destroy_file
       end
     end
+
+    resources :subscriptions, shallow: true, only: %i[create destroy]
   end
 
-  resources :subscriptions, shallow: true, only: %i[create destroy]
 
   namespace :api do
     namespace :v1 do

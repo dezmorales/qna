@@ -18,8 +18,8 @@ p= question.body
 
 - if @subscription.present?
   - if can?(:destroy, @subscription)
-    = link_to 'Unsubscribe', question_subscription_path(@question, @subscription), method: :delete
-  - else
+    = link_to 'Unsubscribe', question_subscriptions_path(@question, @subscription), method: :delete
+- else
   - if can?(:create, Subscription)
     = link_to 'Subscribe', question_subscriptions_path(@question), method: :post
 
