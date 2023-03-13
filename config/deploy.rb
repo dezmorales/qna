@@ -1,7 +1,7 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.17.2"
 
-set :application, "qna"
+set :application, "ustal"
 set :repo_url, "git@github.com:dezmorales/qna.git"
 
 # Default branch is :master
@@ -9,8 +9,8 @@ set :repo_url, "git@github.com:dezmorales/qna.git"
 set :branch, 'main'
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/home/deployer/qna"
-set :deploy_user, 'deployer'
+set :deploy_to, "/home/deploy/ustal"
+set :deploy_user, 'deploy'
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
