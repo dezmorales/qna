@@ -47,6 +47,8 @@ gem 'sinatra', require: false
 gem 'whenever', require: false
 gem 'mini_racer'
 gem 'redis', '~> 4.0'
+gem 'unicorn'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -71,6 +73,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-passenger', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
