@@ -1,49 +1,50 @@
-h1= question.title
-p= question.body
-- if question.files.attached?
-  - question.files.each do |file|
-    div id = "question-file-#{file.id}"
-      p = link_to file.filename.to_s, url_for(file)
-      - if can?(:destroy_file, question)
-        p = link_to 'Delete file', destroy_file_question_path(question, file_id: file.id), method: :delete, remote: true
-.links
-  h4 Links:
-  ul
-    = render @question.links
-= render 'votes', resource: @question
-- if question.reward
-  p Reward:
-  p = @question.reward.title
-  image src="#{@question.reward.image_url}" style="width:48px;height:48px;"
+- cache question do
+  h1= question.title
+  p= question.body
+  - if question.files.attached?
+    - question.files.each do |file|
+      div id = "question-file-#{file.id}"
+        p = link_to file.filename.to_s, url_for(file)
+        - if can?(:destroy_file, question)
+          p = link_to 'Delete file', destroy_file_question_path(question, file_id: file.id), method: :delete, remote: true
+  .links
+    h4 Links:
+    ul
+      = render @question.links
+  = render 'votes', resource: @question
+  - if question.reward
+    p Reward:
+    p = @question.reward.title
+    image src="#{@question.reward.image_url}" style="width:48px;height:48px;"
 
-- if @subscription.present?
-  - if can?(:destroy, @subscription)
-    = link_to 'Unsubscribe', question_subscriptions_path(@question, @subscription), method: :delete
-- else
-  - if can?(:create, Subscription)
-    = link_to 'Subscribe', question_subscriptions_path(@question), method: :post
+  - if @subscription.present?
+    - if can?(:destroy, @subscription)
+      = link_to 'Unsubscribe', question_subscriptions_path(@question, @subscription), method: :delete
+  - else
+    - if can?(:create, Subscription)
+      = link_to 'Subscribe', question_subscriptions_path(@question), method: :post
 
-- if can?(:update, question)
-  p = link_to 'Edit question', '#', class: 'edit-question-link'
-- if can?(:destroy, question)
-  p = link_to 'Delete question', question_path(question), method: :delete
+  - if can?(:update, question)
+    p = link_to 'Edit question', '#', class: 'edit-question-link'
+  - if can?(:destroy, question)
+    p = link_to 'Delete question', question_path(question), method: :delete
 
-= form_with model: question, class: 'hidden', html: { id: "edit-question" }, local: false do |f|
-  p
-    = f.label :body, 'Your title'
-    = f.text_field :title
-  p
-    = f.label :body, 'Your question'
-    = f.text_area :body
-  p
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
+  = form_with model: question, class: 'hidden', html: { id: "edit-question" }, local: false do |f|
+    p
+      = f.label :body, 'Your title'
+      = f.text_field :title
+    p
+      = f.label :body, 'Your question'
+      = f.text_area :body
+    p
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
 
-  p Links:
-  #links
-    = f.fields_for :links do |link|
-      = render 'link_fields', f: link
-    .links
-      = link_to_add_association 'add link', f, :links
+    p Links:
+    #links
+      = f.fields_for :links do |link|
+        = render 'link_fields', f: link
+      .links
+        = link_to_add_association 'add link', f, :links
 
-    = f.submit 'Save'
+      = f.submit 'Save'
