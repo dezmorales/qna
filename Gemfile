@@ -48,6 +48,7 @@ gem 'whenever', require: false
 gem 'mini_racer'
 gem 'redis', '~> 4.0'
 gem 'unicorn'
+gem 'redis-rails'
 
 
 group :development, :test do

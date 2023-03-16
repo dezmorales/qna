@@ -1,3 +1,4 @@
-- if comment.persisted?
-  div id="comment-#{comment.id}"
+- cache comment do
+  - if comment.persisted?
+    div id="comment-#{comment.id}"
     p = comment.body
